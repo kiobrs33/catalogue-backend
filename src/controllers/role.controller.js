@@ -52,7 +52,13 @@ const updateRole = async (req = request, res = response) => {
     const { id } = req.params;
     const body = req.body;
 
-    const role = await Role.findOneAndUpdate({ _id: id, deleted: false }, body);
+    const role = await Role.findOneAndUpdate(
+      { _id: id, deleted: false },
+      body,
+      {
+        returnOriginal: false,
+      }
+    );
 
     if (!role) {
       return res.status(404).json({

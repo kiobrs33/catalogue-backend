@@ -54,7 +54,10 @@ const updateBrand = async (req = request, res = response) => {
 
     const brand = await Brand.findOneAndUpdate(
       { _id: id, deleted: false },
-      body
+      body,
+      {
+        returnOriginal: false,
+      }
     );
 
     if (!brand) {
