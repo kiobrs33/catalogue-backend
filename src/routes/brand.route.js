@@ -24,12 +24,22 @@ router.post(
 );
 router.put(
   "/:id",
-  [validateJWT, isAdminRol, check("id", "No es un 'id' valido.").isMongoId()],
+  [
+    validateJWT,
+    isAdminRol,
+    check("id", "No es un 'id' valido.").isMongoId(),
+    validateFields,
+  ],
   updateBrand
 );
 router.delete(
   "/:id",
-  [validateJWT, isAdminRol, check("id", "No es un 'id' valido.").isMongoId()],
+  [
+    validateJWT,
+    isAdminRol,
+    check("id", "No es un 'id' valido.").isMongoId(),
+    validateFields,
+  ],
   deleteBrand
 );
 

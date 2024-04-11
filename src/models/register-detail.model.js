@@ -5,18 +5,6 @@ const ProductModel = require("./product.model");
 
 const RegisterDetailSchema = Schema(
   {
-    total_sale_price: {
-      type: Number,
-      required: true,
-    },
-    quantity: {
-      type: Number,
-      required: true,
-    },
-    sale_price: {
-      type: Number,
-      required: true,
-    },
     register_id: {
       type: Schema.Types.ObjectId,
       ref: RegisterModel,

@@ -1,22 +1,27 @@
 const { response, request } = require("express");
 
 // MODELOS
-const Color = require("../models/color.model");
+const Product = require("../models/product.model");
 
-const getColors = async (req = request, res = response) => {
+const getProducts = async (req = request, res = response) => {
   try {
     const { limit = 10, skip = 0 } = req.query;
     const query = { deleted: false };
 
-    const [colors, total] = await Promise.all([
-      Color.find(query).skip(parseInt(skip)).limit(parseInt(limit)),
-      Color.countDocuments(query),
+    let [products, total] = await Promise.all([
+      Product.find(query)
+        .populate("model_id")
+        .populate("color_id")
+        .populate("size_id")
+        .skip(parseInt(skip))
+        .limit(parseInt(limit)),
+      Product.countDocuments(query),
     ]);
 
     res.status(200).json({
-      msg: "OK Lista de Colors",
+      msg: "OK Lista de Products",
       total,
-      colors,
+      products,
     });
   } catch (error) {
     console.log(error);
@@ -27,16 +32,16 @@ const getColors = async (req = request, res = response) => {
   }
 };
 
-const postColor = async (req = request, res = response) => {
+const postProduct = async (req = request, res = response) => {
   try {
     const body = req.body;
-    const color = new Color(body);
+    const product = new Product(body);
 
-    await color.save();
+    await product.save();
 
     res.status(200).json({
-      msg: "OK Color creado.",
-      color,
+      msg: "OK Product creado.",
+      product,
     });
   } catch (error) {
     console.log(error);
@@ -47,12 +52,12 @@ const postColor = async (req = request, res = response) => {
   }
 };
 
-const updateColor = async (req = request, res = response) => {
+const updateProduct = async (req = request, res = response) => {
   try {
     const { id } = req.params;
     const body = req.body;
 
-    const color = await Color.findOneAndUpdate(
+    const product = await Product.findOneAndUpdate(
       { _id: id, deleted: false },
       body,
       {
@@ -60,15 +65,15 @@ const updateColor = async (req = request, res = response) => {
       }
     );
 
-    if (!color) {
+    if (!product) {
       return res.status(404).json({
-        msg: "ERROR 'id' del Color no encontrado.",
+        msg: "ERROR 'id' del Product no encontrado.",
       });
     }
 
     res.status(200).json({
-      msg: "OK Color actualizado.",
-      color,
+      msg: "OK Product actualizado.",
+      product,
     });
   } catch (error) {
     console.log(error);
@@ -79,24 +84,24 @@ const updateColor = async (req = request, res = response) => {
   }
 };
 
-const deleteColor = async (req = request, res = response) => {
+const deleteProduct = async (req = request, res = response) => {
   try {
     const { id } = req.params;
 
-    const color = await Color.findOneAndUpdate(
+    const product = await Product.findOneAndUpdate(
       { _id: id, deleted: false },
       { deleted: true }
     );
 
-    if (!color) {
+    if (!product) {
       return res.status(404).json({
-        msg: "ERROR 'id' del Color no encontrado.",
+        msg: "ERROR 'id' del Product no encontrado.",
       });
     }
 
     res.status(200).json({
-      msg: "OK Color eliminado.",
-      color,
+      msg: "OK Product eliminado.",
+      product,
     });
   } catch (error) {
     console.log(error);
@@ -108,8 +113,8 @@ const deleteColor = async (req = request, res = response) => {
 };
 
 module.exports = {
-  getColors,
-  postColor,
-  updateColor,
-  deleteColor,
+  getProducts,
+  postProduct,
+  updateProduct,
+  deleteProduct,
 };

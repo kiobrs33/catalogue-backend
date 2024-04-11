@@ -15,7 +15,10 @@ const getUsers = async (req = request, res = response) => {
     const query = { deleted: false }; // Solo los registros que no fueron borrados
 
     const [users, total] = await Promise.all([
-      User.find(query).skip(parseInt(skip)).limit(parseInt(limit)),
+      User.find(query)
+        .skip(parseInt(skip))
+        .populate("role_id")
+        .limit(parseInt(limit)),
       User.countDocuments(query),
     ]);
 

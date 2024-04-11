@@ -52,7 +52,13 @@ const updateSize = async (req = request, res = response) => {
     const { id } = req.params;
     const body = req.body;
 
-    const size = await Size.findOneAndUpdate({ _id: id, deleted: false }, body);
+    const size = await Size.findOneAndUpdate(
+      { _id: id, deleted: false },
+      body,
+      {
+        returnOriginal: false,
+      }
+    );
 
     if (!size) {
       return res.status(404).json({

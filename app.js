@@ -31,6 +31,8 @@ class App {
   routes() {
     this.app.use("/auth", require("./src/routes/auth.route"));
     this.app.use("/users", require("./src/routes/user.route"));
+    this.app.use("/products", require("./src/routes/product.route"));
+    this.app.use("/registers", require("./src/routes/register.route"));
     this.app.use("/roles", require("./src/routes/role.route"));
     this.app.use("/brands", require("./src/routes/brand.route"));
     this.app.use("/colors", require("./src/routes/color.route"));

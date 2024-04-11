@@ -2,7 +2,7 @@ const { Router } = require("express");
 const { check } = require("express-validator");
 
 const router = Router();
-const {} = require("../controllers/role.controller");
+
 const { validateJWT, isAdminRol, validateFields } = require("../validators");
 const {
   getColors,
@@ -25,12 +25,22 @@ router.post(
 );
 router.put(
   "/:id",
-  [validateJWT, isAdminRol, check("id", "No es un 'id' valido.").isMongoId()],
+  [
+    validateJWT,
+    isAdminRol,
+    check("id", "No es un 'id' valido.").isMongoId(),
+    validateFields,
+  ],
   updateColor
 );
 router.delete(
   "/:id",
-  [validateJWT, isAdminRol, check("id", "No es un 'id' valido.").isMongoId()],
+  [
+    validateJWT,
+    isAdminRol,
+    check("id", "No es un 'id' valido.").isMongoId(),
+    validateFields,
+  ],
   deleteColor
 );
 

@@ -10,7 +10,7 @@ const postLogin = async (req = request, res = response) => {
     const { email, password } = req.body;
 
     // Verifica si el email existe
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).populate("role_id");
 
     if (!user) {
       return res.status(400).json({

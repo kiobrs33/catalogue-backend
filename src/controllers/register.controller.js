@@ -3,6 +3,7 @@ const { response, request } = require("express");
 const Register = require("../models/register.model");
 const User = require("../models/user.model");
 const RegisterDetail = require("../models/register-detail.model");
+const Product = require("../models/product.model");
 
 const getRegisters = async (req = request, res = response) => {
   try {
@@ -72,7 +73,7 @@ const postRegister = async (req = request, res = response) => {
 
     if (!user) {
       res.status(400).json({
-        msg: "ERROR El User no existe.",
+        msg: "ERROR El user_id no existe.",
       });
     }
 
@@ -86,16 +87,19 @@ const postRegister = async (req = request, res = response) => {
       });
     }
 
+    const productsResult = await Promise.all(
+      details.map(async (productBody) => {
+        const product = new Product(productBody);
+        return await await product.save();
+      })
+    );
+
     await Promise.all(
-      details.map(async (detail) => {
+      productsResult.map(async (product) => {
         const registerDetailObj = new RegisterDetail({
           register_id: registerResult._id,
-          product_id: detail.user_id,
-          quantity: detail.quantity,
-          sale_price: detail.sale_price,
-          total_sale_price: detail.total_sale_price,
+          product_id: product._id,
         });
-
         return await registerDetailObj.save();
       })
     );

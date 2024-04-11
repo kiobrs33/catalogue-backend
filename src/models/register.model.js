@@ -1,5 +1,7 @@
 const { Schema, model } = require("mongoose");
 
+const UserModel = require("./user.model");
+
 const RegisterSchema = Schema(
   {
     date: {
@@ -8,7 +10,7 @@ const RegisterSchema = Schema(
     },
     user_id: {
       type: Schema.Types.ObjectId,
-      ref: UserSchema,
+      ref: UserModel,
       required: [true, "The user_id is required"],
     },
     deleted: {

@@ -54,7 +54,10 @@ const updateModel = async (req = request, res = response) => {
 
     const model = await Model.findOneAndUpdate(
       { _id: id, deleted: false },
-      body
+      body,
+      {
+        returnOriginal: false,
+      }
     );
 
     if (!model) {
